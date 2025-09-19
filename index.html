@@ -171,23 +171,21 @@
 
       if(i % 5 === 0) direction *= -1; // cambio de dirección para zigzag
 
-      // Tallo
-      const line = document.createElementNS("http://www.w3.org/2000/svg","line");
-      line.setAttribute("x1","30");
-      line.setAttribute("y1","140");
-      line.setAttribute("x2","30");
-      line.setAttribute("y2","50");
-      line.setAttribute("stroke","#21AF57");
-      line.setAttribute("stroke-width","6");
+      // Tallo y hoja
+      const stemAndLeaf = document.createElementNS("http://www.w3.org/2000/svg","path");
+      stemAndLeaf.setAttribute("d","M30 140 C28 100, 32 70, 30 50 L20 80 Q10 70, 15 60");
+      stemAndLeaf.setAttribute("stroke","#21AF57");
+      stemAndLeaf.setAttribute("stroke-width","4");
+      stemAndLeaf.setAttribute("fill","transparent");
 
       // Flor
-      const flower = document.createElementNS("http://www.w3.org/2000/svg","polygon");
-      flower.setAttribute("points","15,50 30,0 45,50");
+      const flower = document.createElementNS("http://www.w3.org/2000/svg","path");
+      flower.setAttribute("d","M30 50 C40 30, 45 10, 35 5 C25 10, 20 30, 30 50 Z");
       flower.setAttribute("fill","#FFFF00");
       flower.setAttribute("stroke","#FFA500");
       flower.setAttribute("stroke-width","2");
 
-      tulip.appendChild(line);
+      tulip.appendChild(stemAndLeaf);
       tulip.appendChild(flower);
       scene.appendChild(tulip);
     }
