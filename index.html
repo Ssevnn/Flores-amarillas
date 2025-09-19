@@ -20,7 +20,15 @@
   }
 
   /* Estrellas de fondo */
-  .star { position: absolute; width: 2px; height: 2px; background: white; border-radius: 50%; opacity: 0.8; animation: twinkle 3s infinite ease-in-out; }
+  .star { 
+    position: absolute; 
+    width: 2px; 
+    height: 2px; 
+    background: white; 
+    border-radius: 50%; 
+    opacity: 0.8; 
+    animation: twinkle 3s infinite ease-in-out; 
+  }
   @keyframes twinkle { 0%,100%{opacity:0.2}50%{opacity:1} }
 
   h1 { 
@@ -32,28 +40,78 @@
     animation: fadeIn 2s ease-in-out;
   }
 
-  .message { font-size: clamp(1.2rem, 4vw, 2rem); text-align:center; opacity:0; transform:translateY(20px); transition: all 1s ease; }
-  .message.show { opacity:1; transform:translateY(0); }
+  .message { 
+    font-size: clamp(1.2rem, 4vw, 2rem); 
+    text-align:center; 
+    opacity:0; 
+    transform:translateY(20px); 
+    transition: all 1s ease; 
+  }
+  .message.show { 
+    opacity:1; 
+    transform:translateY(0); 
+  }
 
   button {
-    padding: 14px 30px; border: none; border-radius: 30px; background: linear-gradient(45deg,#FFD700,#FFA500);
-    color:#333; font-size: clamp(1rem,4vw,1.4rem); cursor:pointer; transition:all 0.3s ease; box-shadow:0 4px 15px rgba(0,0,0,0.4);
+    padding: 14px 30px; 
+    border: none; 
+    border-radius: 30px; 
+    background: linear-gradient(45deg,#FFD700,#FFA500);
+    color:#333; 
+    font-size: clamp(1rem,4vw,1.4rem); 
+    cursor:pointer; 
+    transition:all 0.3s ease; 
+    box-shadow:0 4px 15px rgba(0,0,0,0.4);
   }
-  button:hover { transform: scale(1.07); box-shadow:0 6px 20px rgba(0,0,0,0.5); }
-  #pauseBtn { margin-top:15px; font-size: clamp(0.8rem, 3vw, 1rem); padding: 10px 20px; display:none; }
+  button:hover { 
+    transform: scale(1.07); 
+    box-shadow:0 6px 20px rgba(0,0,0,0.5); 
+  }
+  #pauseBtn { 
+    margin-top:15px; 
+    font-size: clamp(0.8rem, 3vw, 1rem); 
+    padding: 10px 20px; 
+    display:none; 
+  }
 
-  #scene { display:none; flex-wrap: wrap; justify-content:center; align-items:flex-end; gap:30px; height:60vh; width:100%; padding-bottom:5vh; }
+  #scene { 
+    display:none; 
+    flex-wrap: wrap; 
+    justify-content:center; 
+    align-items:flex-end; 
+    gap:30px; 
+    height:100vh; 
+    width:100%; 
+    position:absolute; 
+    bottom:0; 
+    left:0;
+  }
 
-  /* Animación de florecimiento */
-  .tulip-svg { transform: scaleY(0); transform-origin: bottom center; animation: bloom 2s forwards; }
-  @keyframes bloom { 0% { transform: scaleY(0); opacity:0; } 100% { transform: scaleY(1); opacity:1; } }
+  /* Animación de florecimiento y movimiento de enredadera */
+  .tulip-svg { 
+    transform: scaleY(0); 
+    transform-origin: bottom center; 
+    animation: bloom 2s forwards, sway 4s ease-in-out infinite alternate; 
+  }
+  @keyframes bloom { 
+    0% { transform: scaleY(0); opacity:0; } 
+    100% { transform: scaleY(1); opacity:1; } 
+  }
+
+  @keyframes sway {
+    0% { transform: scaleY(1) rotate(-5deg); }
+    50% { transform: scaleY(1) rotate(5deg); }
+    100% { transform: scaleY(1) rotate(-5deg); }
+  }
 
   @keyframes fadeIn { from {opacity:0;} to {opacity:1;} }
+
 </style>
 </head>
 <body>
 
 <script>
+  // Estrellas
   for(let i=0;i<50;i++){
     const s=document.createElement("div");
     s.classList.add("star");
@@ -70,27 +128,13 @@
   <div class="message">Eres mi razón de sonreír ✨</div>
   <div class="message">La luz de mis días 💫</div>
   <div class="message">Y mi sueño más bonito 🌙</div>
-  <div class="message">Te amoooo 💛</div>
+  <div class="message">Te amoooo 💛</div> <!-- Nuevo mensaje añadido -->
 </div>
 
 <button id="nextBtn">Siguiente</button>
 <button id="pauseBtn">Pausar</button>
 
-<div id="scene">
-  <!-- Tulipanes en SVG -->
-  <svg class="tulip-svg" width="60" height="140" viewBox="0 0 60 140">
-    <line x1="30" y1="140" x2="30" y2="50" stroke="green" stroke-width="6" />
-    <polygon points="15,50 30,0 45,50" fill="yellow" stroke="orange" stroke-width="2" />
-  </svg>
-  <svg class="tulip-svg" width="60" height="140" viewBox="0 0 60 140" style="animation-delay:0.5s">
-    <line x1="30" y1="140" x2="30" y2="50" stroke="green" stroke-width="6" />
-    <polygon points="15,50 30,0 45,50" fill="yellow" stroke="orange" stroke-width="2" />
-  </svg>
-  <svg class="tulip-svg" width="60" height="140" viewBox="0 0 60 140" style="animation-delay:1s">
-    <line x1="30" y1="140" x2="30" y2="50" stroke="green" stroke-width="6" />
-    <polygon points="15,50 30,0 45,50" fill="yellow" stroke="orange" stroke-width="2" />
-  </svg>
-</div>
+<div id="scene"></div>
 
 <audio id="music" loop>
   <source src="flores-amarillas-que-otra-cosita-les-gustaria-que-hiciera-floresamarillas-128-ytshorts.savetube.me.mp3" type="audio/mpeg">
@@ -106,12 +150,46 @@
   let isPlaying = false;
   let step = 0;
 
+  // Crear tulipanes como enredadera
+  function createTulips(count){
+    for(let i=0;i<count;i++){
+      const tulip = document.createElementNS("http://www.w3.org/2000/svg","svg");
+      tulip.setAttribute("width","60");
+      tulip.setAttribute("height","140");
+      tulip.setAttribute("viewBox","0 0 60 140");
+      tulip.classList.add("tulip-svg");
+      tulip.style.position = "absolute";
+      tulip.style.left = Math.random()*95+"%";
+      tulip.style.bottom = Math.random()*30+"%";
+      tulip.style.animationDelay = (Math.random()*2)+"s";
+
+      const line = document.createElementNS("http://www.w3.org/2000/svg","line");
+      line.setAttribute("x1","30");
+      line.setAttribute("y1","140");
+      line.setAttribute("x2","30");
+      line.setAttribute("y2","50");
+      line.setAttribute("stroke","green");
+      line.setAttribute("stroke-width","6");
+
+      const flower = document.createElementNS("http://www.w3.org/2000/svg","polygon");
+      flower.setAttribute("points","15,50 30,0 45,50");
+      flower.setAttribute("fill","yellow");
+      flower.setAttribute("stroke","orange");
+      flower.setAttribute("stroke-width","2");
+
+      tulip.appendChild(line);
+      tulip.appendChild(flower);
+      scene.appendChild(tulip);
+    }
+  }
+
   nextBtn.addEventListener('click', () => {
     if(step<messages.length){
       messages[step].classList.add("show");
       step++;
     } else {
-      scene.style.display = 'flex';
+      scene.style.display = 'block';
+      createTulips(40); // Tulipanes por toda la pantalla
       nextBtn.style.display = 'none';
       pauseBtn.style.display = 'inline-block';
       music.play();
@@ -128,8 +206,3 @@
 
 </body>
 </html>
-
-
-
-   
-
