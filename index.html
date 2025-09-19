@@ -19,86 +19,92 @@
     position: relative;
   }
 
-  /* Estrellas de fondo */
-  .star { 
-    position: absolute; 
-    width: 2px; 
-    height: 2px; 
-    background: white; 
-    border-radius: 50%; 
-    opacity: 0.8; 
-    animation: twinkle 3s infinite ease-in-out; 
+  /* Estrellas */
+  .star {
+    position: absolute;
+    width: 2px;
+    height: 2px;
+    background: white;
+    border-radius: 50%;
+    opacity: 0.8;
+    animation: twinkle 3s infinite ease-in-out;
   }
-  @keyframes twinkle { 0%,100%{opacity:0.2}50%{opacity:1} }
 
-  h1 { 
-    color: #FFD700; 
-    font-size: clamp(2.5rem, 6vw, 4rem); 
-    text-align: center; 
-    margin-bottom: 1.5rem; 
-    text-shadow: 0 0 15px rgba(255,215,0,0.9); 
+  @keyframes twinkle {
+    0%,100% { opacity: 0.2; }
+    50% { opacity: 1; }
+  }
+
+  h1 {
+    color: #FFD700;
+    font-size: clamp(2.5rem, 6vw, 4rem);
+    text-align: center;
+    margin-bottom: 1.5rem;
+    text-shadow: 0 0 15px rgba(255,215,0,0.9);
     animation: fadeIn 2s ease-in-out;
   }
 
-  .message { 
-    font-size: clamp(1.2rem, 4vw, 2rem); 
-    text-align:center; 
-    opacity:0; 
-    transform:translateY(20px); 
-    transition: all 1s ease; 
+  @keyframes fadeIn { from {opacity:0;} to {opacity:1;} }
+
+  .message {
+    font-size: clamp(1.2rem, 4vw, 2rem);
+    text-align:center;
+    opacity:0;
+    transform:translateY(20px);
+    transition: all 1s ease;
   }
-  .message.show { 
-    opacity:1; 
-    transform:translateY(0); 
+  .message.show {
+    opacity:1;
+    transform:translateY(0);
   }
 
   button {
-    padding: 14px 30px; 
-    border: none; 
-    border-radius: 30px; 
+    padding: 14px 30px;
+    border: none;
+    border-radius: 30px;
     background: linear-gradient(45deg,#FFD700,#FFA500);
-    color:#333; 
-    font-size: clamp(1rem,4vw,1.4rem); 
-    cursor:pointer; 
-    transition:all 0.3s ease; 
+    color:#333;
+    font-size: clamp(1rem,4vw,1.4rem);
+    cursor:pointer;
+    transition: all 0.3s ease;
     box-shadow:0 4px 15px rgba(0,0,0,0.4);
+    margin-top: 10px;
   }
-  button:hover { 
-    transform: scale(1.07); 
-    box-shadow:0 6px 20px rgba(0,0,0,0.5); 
-  }
-  #pauseBtn { 
-    margin-top:15px; 
-    font-size: clamp(0.8rem, 3vw, 1rem); 
-    padding: 10px 20px; 
-    display:none; 
+  button:hover {
+    transform: scale(1.07);
+    box-shadow:0 6px 20px rgba(0,0,0,0.5);
   }
 
-  #scene { 
-    display:none; 
-    height:100vh; 
-    width:100%; 
-    position:absolute; 
-    bottom:0; 
+  #pauseBtn { display:none; }
+
+  /* Escena de tulipanes */
+  #scene {
+    display:none;
+    height:100vh;
+    width:100%;
+    position:absolute;
+    bottom:0;
     left:0;
+    pointer-events:none;
   }
 
-  /* Animación de florecimiento y balanceo */
-  .tulip-svg { 
-    transform: scaleY(0); 
-    transform-origin: bottom center; 
-    animation: bloom 2s forwards, sway 4s ease-in-out infinite alternate, rise 5s forwards;
+  /* Tulipanes */
+  .tulip-svg {
+    transform: scaleY(0);
+    transform-origin: bottom center;
+    animation: bloom 2s forwards, sway 4s ease-in-out infinite alternate, rise 6s forwards;
+    position: absolute;
   }
 
-  @keyframes bloom { 
-    0% { transform: scaleY(0); opacity:0; } 
-    100% { transform: scaleY(1); opacity:1; } 
+  @keyframes bloom {
+    0% { transform: scaleY(0); opacity:0; }
+    100% { transform: scaleY(1); opacity:1; }
   }
 
   @keyframes sway {
-    0% { transform: scaleY(1) rotate(-5deg); }
-    50% { transform: scaleY(1) rotate(5deg); }
-    100% { transform: scaleY(1) rotate(-5deg); }
+    0% { transform: rotate(-5deg); }
+    50% { transform: rotate(5deg); }
+    100% { transform: rotate(-5deg); }
   }
 
   @keyframes rise {
@@ -106,23 +112,9 @@
     100% { transform: translateY(0); }
   }
 
-  @keyframes fadeIn { from {opacity:0;} to {opacity:1;} }
-
 </style>
 </head>
 <body>
-
-<script>
-  // Estrellas
-  for(let i=0;i<50;i++){
-    const s=document.createElement("div");
-    s.classList.add("star");
-    s.style.top=Math.random()*100+"%";
-    s.style.left=Math.random()*100+"%";
-    s.style.animationDuration=(2+Math.random()*3)+"s";
-    document.body.appendChild(s);
-  }
-</script>
 
 <h1>Para Orielys 💛</h1>
 
@@ -144,26 +136,40 @@
 </audio>
 
 <script>
+  // Crear estrellas
+  for(let i=0;i<50;i++){
+    const star = document.createElement("div");
+    star.classList.add("star");
+    star.style.top = Math.random()*100 + "%";
+    star.style.left = Math.random()*100 + "%";
+    star.style.animationDuration = (2 + Math.random()*3) + "s";
+    document.body.appendChild(star);
+  }
+
+  const messages = document.querySelectorAll('.message');
   const nextBtn = document.getElementById('nextBtn');
   const pauseBtn = document.getElementById('pauseBtn');
   const scene = document.getElementById('scene');
   const music = document.getElementById('music');
-  const messages = document.querySelectorAll('.message');
-  let isPlaying = false;
   let step = 0;
+  let isPlaying = false;
 
-  // Crear tulipanes con enredadera que sube
+  // Crear tulipanes estilo enredadera zigzag
   function createTulips(count){
+    let direction = 1;
     for(let i=0;i<count;i++){
       const tulip = document.createElementNS("http://www.w3.org/2000/svg","svg");
       tulip.setAttribute("width","60");
       tulip.setAttribute("height","140");
       tulip.setAttribute("viewBox","0 0 60 140");
       tulip.classList.add("tulip-svg");
-      tulip.style.position = "absolute";
-      tulip.style.left = (10 + i*2.2) + "%"; // distribuidos horizontalmente
-      tulip.style.bottom = "0"; 
-      tulip.style.animationDelay = (i*0.2) + "s"; // efecto escalonado
+
+      // Zigzag horizontal
+      tulip.style.left = (10 + (i*2.5)*direction) + "%";
+      tulip.style.bottom = "0";
+      tulip.style.animationDelay = (i*0.3) + "s";
+
+      if(i % 5 === 0) direction *= -1; // cambio de dirección para zigzag
 
       // Tallo
       const line = document.createElementNS("http://www.w3.org/2000/svg","line");
@@ -171,14 +177,14 @@
       line.setAttribute("y1","140");
       line.setAttribute("x2","30");
       line.setAttribute("y2","50");
-      line.setAttribute("stroke","#21AF57"); // verde
+      line.setAttribute("stroke","#21AF57");
       line.setAttribute("stroke-width","6");
 
       // Flor
       const flower = document.createElementNS("http://www.w3.org/2000/svg","polygon");
       flower.setAttribute("points","15,50 30,0 45,50");
-      flower.setAttribute("fill","#FFFF00"); // amarillo
-      flower.setAttribute("stroke","#FFA500"); // borde naranja
+      flower.setAttribute("fill","#FFFF00");
+      flower.setAttribute("stroke","#FFA500");
       flower.setAttribute("stroke-width","2");
 
       tulip.appendChild(line);
@@ -188,25 +194,31 @@
   }
 
   nextBtn.addEventListener('click', () => {
-    if(step<messages.length){
+    if(step < messages.length){
       messages[step].classList.add("show");
       step++;
     } else {
-      scene.style.display = 'block';
-      createTulips(30); // Tulipanes con enredadera
-      nextBtn.style.display = 'none';
-      pauseBtn.style.display = 'inline-block';
+      scene.style.display = "block";
+      createTulips(40);
+      nextBtn.style.display = "none";
+      pauseBtn.style.display = "inline-block";
       music.play();
       isPlaying = true;
     }
   });
 
   pauseBtn.addEventListener('click', () => {
-    if(isPlaying){ music.pause(); pauseBtn.textContent="Reanudar"; }
-    else{ music.play(); pauseBtn.textContent="Pausar"; }
-    isPlaying=!isPlaying;
+    if(isPlaying){
+      music.pause();
+      pauseBtn.textContent = "Reanudar";
+    } else {
+      music.play();
+      pauseBtn.textContent = "Pausar";
+    }
+    isPlaying = !isPlaying;
   });
 </script>
 
 </body>
 </html>
+
