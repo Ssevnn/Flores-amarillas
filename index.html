@@ -158,6 +158,75 @@
 
   <div id="messages">
     <div class="message">Eres mi razón de sonreír ✨</div>
+    <div class="message">La luz de mis días 💫</div>
+    <div class="message">Y mi sueño más bonito 🌙</div>
+  </div>
+
+  <button id="nextBtn">Siguiente</button>
+  <button id="pauseBtn">Pausar</button>
+
+  <div id="scene">
+    <div class="tulip" style="animation-delay:0.3s">
+      <div class="stem"></div>
+      <div class="flower"></div>
+    </div>
+    <div class="tulip" style="animation-delay:0.6s">
+      <div class="stem"></div>
+      <div class="flower"></div>
+    </div>
+    <div class="tulip" style="animation-delay:0.9s">
+      <div class="stem"></div>
+      <div class="flower"></div>
+    </div>
+    <div class="tulip" style="animation-delay:1.2s">
+      <div class="stem"></div>
+      <div class="flower"></div>
+    </div>
+  </div>
+
+  <!-- Audio -->
+  <audio id="music" loop>
+    <source src="flores-amarillas-que-otra-cosita-les-gustaria-que-hiciera-floresamarillas-128-ytshorts.savetube.me.mp3" type="audio/mpeg">
+    Tu navegador no soporta audio HTML5.
+  </audio>
+
+  <script>
+    const nextBtn = document.getElementById('nextBtn');
+    const pauseBtn = document.getElementById('pauseBtn');
+    const scene = document.getElementById('scene');
+    const music = document.getElementById('music');
+    const messages = document.querySelectorAll('.message');
+
+    let isPlaying = false;
+
+    let step = 0;
+    nextBtn.addEventListener('click', () => {
+      if (step < messages.length) {
+        messages[step].classList.add("show");
+        step++;
+      } else {
+        scene.style.display = 'flex';
+        nextBtn.style.display = 'none';
+        pauseBtn.style.display = 'inline-block';
+        music.play();
+        isPlaying = true;
+      }
+    });
+
+    pauseBtn.addEventListener('click', () => {
+      if (isPlaying) {
+        music.pause();
+        pauseBtn.textContent = "Reanudar";
+      } else {
+        music.play();
+        pauseBtn.textContent = "Pausar";
+      }
+      isPlaying = !isPlaying;
+    });
+  </script>
+</body>
+</html>
+
 
    
 
