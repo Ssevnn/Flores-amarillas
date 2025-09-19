@@ -1,231 +1,134 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Para Orielys</title>
-  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
-  <style>
-    body {
-      margin: 0;
-      height: 100vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      font-family: 'Dancing Script', cursive;
-      overflow: hidden;
-      background: #014A4A;
-      position: relative;
-      color: #fff;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Para Orielys</title>
+<style>
+  body {
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: #014A4A;
+    font-family: 'Dancing Script', cursive;
+    overflow: hidden;
+    color: #fff;
+    position: relative;
+  }
 
-    /* Estrellas */
-    .star {
-      position: absolute;
-      width: 2px;
-      height: 2px;
-      background: white;
-      border-radius: 50%;
-      opacity: 0.8;
-      animation: twinkle 3s infinite ease-in-out;
-    }
-    @keyframes twinkle {
-      0%, 100% { opacity: 0.2; }
-      50% { opacity: 1; }
-    }
+  /* Estrellas de fondo */
+  .star { position: absolute; width: 2px; height: 2px; background: white; border-radius: 50%; opacity: 0.8; animation: twinkle 3s infinite ease-in-out; }
+  @keyframes twinkle { 0%,100%{opacity:0.2}50%{opacity:1} }
 
-    h1 {
-      color: #FFD700;
-      font-size: clamp(2.5rem, 6vw, 4rem);
-      margin-bottom: 1.5rem;
-      text-shadow: 0 0 15px rgba(255,215,0,0.9);
-      text-align: center;
-      animation: fadeIn 2s ease-in-out;
-    }
+  h1 { 
+    color: #FFD700; 
+    font-size: clamp(2.5rem, 6vw, 4rem); 
+    text-align: center; 
+    margin-bottom: 1.5rem; 
+    text-shadow: 0 0 15px rgba(255,215,0,0.9); 
+    animation: fadeIn 2s ease-in-out;
+  }
 
-    .message {
-      font-size: clamp(1.2rem, 4vw, 2rem);
-      margin: 10px 0;
-      text-align: center;
-      opacity: 0;
-      transform: translateY(20px);
-      transition: all 1s ease;
-    }
-    .message.show {
-      opacity: 1;
-      transform: translateY(0);
-    }
+  .message { font-size: clamp(1.2rem, 4vw, 2rem); text-align:center; opacity:0; transform:translateY(20px); transition: all 1s ease; }
+  .message.show { opacity:1; transform:translateY(0); }
 
-    button {
-      padding: 14px 30px;
-      border: none;
-      border-radius: 30px;
-      background: linear-gradient(45deg, #FFD700, #FFA500);
-      color: #333;
-      font-size: clamp(1rem, 4vw, 1.4rem);
-      cursor: pointer;
-      transition: all 0.3s ease;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.4);
-    }
+  button {
+    padding: 14px 30px; border: none; border-radius: 30px; background: linear-gradient(45deg,#FFD700,#FFA500);
+    color:#333; font-size: clamp(1rem,4vw,1.4rem); cursor:pointer; transition:all 0.3s ease; box-shadow:0 4px 15px rgba(0,0,0,0.4);
+  }
+  button:hover { transform: scale(1.07); box-shadow:0 6px 20px rgba(0,0,0,0.5); }
+  #pauseBtn { margin-top:15px; font-size: clamp(0.8rem, 3vw, 1rem); padding: 10px 20px; display:none; }
 
-    button:hover {
-      transform: scale(1.07);
-      box-shadow: 0 6px 20px rgba(0,0,0,0.5);
-    }
+  #scene { display:none; flex-wrap: wrap; justify-content:center; align-items:flex-end; gap:30px; height:60vh; width:100%; padding-bottom:5vh; }
 
-    #pauseBtn {
-      margin-top: 15px;
-      font-size: clamp(0.8rem, 3vw, 1rem);
-      padding: 10px 20px;
-      display: none;
-    }
+  /* Animación de florecimiento */
+  .tulip-svg { transform: scaleY(0); transform-origin: bottom center; animation: bloom 2s forwards; }
+  @keyframes bloom { 0% { transform: scaleY(0); opacity:0; } 100% { transform: scaleY(1); opacity:1; } }
 
-    /* Escena de flores */
-    #scene {
-      display: none;
-      flex-wrap: wrap;
-      justify-content: center;
-      align-items: flex-end;
-      gap: 40px;
-      height: 60vh;
-      width: 100%;
-      padding-bottom: 5vh;
-      animation: fadeIn 2s ease-in-out;
-    }
-
-    .tulip {
-      width: 55px;
-      height: 140px;
-      position: relative;
-      opacity: 0;
-      transform: scaleY(0);
-      animation: bloom 2s forwards;
-    }
-
-    .stem {
-      width: 7px;
-      height: 100%;
-      background: linear-gradient(to bottom, #006400, #228B22);
-      margin: 0 auto;
-      border-radius: 3px;
-      box-shadow: 0 0 5px rgba(0,100,0,0.5);
-    }
-
-    .flower {
-      position: absolute;
-      top: -40px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 50px;
-      height: 50px;
-      background: #FFD700;
-      border-radius: 50% 50% 0 0;
-      box-shadow: -25px 25px 0 -12px #FFD700, 25px 25px 0 -12px #FFD700;
-      animation: pulse 3s infinite ease-in-out;
-    }
-
-    @keyframes bloom {
-      0% { opacity: 0; transform: scaleY(0); }
-      100% { opacity: 1; transform: scaleY(1); }
-    }
-
-    @keyframes fadeIn {
-      from {opacity: 0;}
-      to {opacity: 1;}
-    }
-
-    @keyframes pulse {
-      0%, 100% { transform: translateX(-50%) scale(1); }
-      50% { transform: translateX(-50%) scale(1.1); }
-    }
-  </style>
+  @keyframes fadeIn { from {opacity:0;} to {opacity:1;} }
+</style>
 </head>
 <body>
-  <!-- Estrellas -->
-  <script>
-    for (let i = 0; i < 50; i++) {
-      const star = document.createElement("div");
-      star.classList.add("star");
-      star.style.top = Math.random() * 100 + "%";
-      star.style.left = Math.random() * 100 + "%";
-      star.style.animationDuration = (2 + Math.random() * 3) + "s";
-      document.body.appendChild(star);
+
+<script>
+  for(let i=0;i<50;i++){
+    const s=document.createElement("div");
+    s.classList.add("star");
+    s.style.top=Math.random()*100+"%";
+    s.style.left=Math.random()*100+"%";
+    s.style.animationDuration=(2+Math.random()*3)+"s";
+    document.body.appendChild(s);
+  }
+</script>
+
+<h1>Para Orielys 💛</h1>
+
+<div id="messages">
+  <div class="message">Eres mi razón de sonreír ✨</div>
+  <div class="message">La luz de mis días 💫</div>
+  <div class="message">Y mi sueño más bonito 🌙</div>
+  <div class="message">Te amoooo 💛</div>
+</div>
+
+<button id="nextBtn">Siguiente</button>
+<button id="pauseBtn">Pausar</button>
+
+<div id="scene">
+  <!-- Tulipanes en SVG -->
+  <svg class="tulip-svg" width="60" height="140" viewBox="0 0 60 140">
+    <line x1="30" y1="140" x2="30" y2="50" stroke="green" stroke-width="6" />
+    <polygon points="15,50 30,0 45,50" fill="yellow" stroke="orange" stroke-width="2" />
+  </svg>
+  <svg class="tulip-svg" width="60" height="140" viewBox="0 0 60 140" style="animation-delay:0.5s">
+    <line x1="30" y1="140" x2="30" y2="50" stroke="green" stroke-width="6" />
+    <polygon points="15,50 30,0 45,50" fill="yellow" stroke="orange" stroke-width="2" />
+  </svg>
+  <svg class="tulip-svg" width="60" height="140" viewBox="0 0 60 140" style="animation-delay:1s">
+    <line x1="30" y1="140" x2="30" y2="50" stroke="green" stroke-width="6" />
+    <polygon points="15,50 30,0 45,50" fill="yellow" stroke="orange" stroke-width="2" />
+  </svg>
+</div>
+
+<audio id="music" loop>
+  <source src="flores-amarillas-que-otra-cosita-les-gustaria-que-hiciera-floresamarillas-128-ytshorts.savetube.me.mp3" type="audio/mpeg">
+  Tu navegador no soporta audio HTML5.
+</audio>
+
+<script>
+  const nextBtn = document.getElementById('nextBtn');
+  const pauseBtn = document.getElementById('pauseBtn');
+  const scene = document.getElementById('scene');
+  const music = document.getElementById('music');
+  const messages = document.querySelectorAll('.message');
+  let isPlaying = false;
+  let step = 0;
+
+  nextBtn.addEventListener('click', () => {
+    if(step<messages.length){
+      messages[step].classList.add("show");
+      step++;
+    } else {
+      scene.style.display = 'flex';
+      nextBtn.style.display = 'none';
+      pauseBtn.style.display = 'inline-block';
+      music.play();
+      isPlaying = true;
     }
-  </script>
+  });
 
-  <h1>Para Orielys 💛</h1>
+  pauseBtn.addEventListener('click', () => {
+    if(isPlaying){ music.pause(); pauseBtn.textContent="Reanudar"; }
+    else{ music.play(); pauseBtn.textContent="Pausar"; }
+    isPlaying=!isPlaying;
+  });
+</script>
 
-  <div id="messages">
-    <div class="message">Eres mi razón de sonreír ✨</div>
-    <div class="message">La luz de mis días 💫</div>
-    <div class="message">Y mi sueño más bonito 🌙</div>
-  </div>
-
-  <button id="nextBtn">Siguiente</button>
-  <button id="pauseBtn">Pausar</button>
-
-  <div id="scene">
-    <div class="tulip" style="animation-delay:0.3s">
-      <div class="stem"></div>
-      <div class="flower"></div>
-    </div>
-    <div class="tulip" style="animation-delay:0.6s">
-      <div class="stem"></div>
-      <div class="flower"></div>
-    </div>
-    <div class="tulip" style="animation-delay:0.9s">
-      <div class="stem"></div>
-      <div class="flower"></div>
-    </div>
-    <div class="tulip" style="animation-delay:1.2s">
-      <div class="stem"></div>
-      <div class="flower"></div>
-    </div>
-  </div>
-
-  <!-- Audio -->
-  <audio id="music" loop>
-    <source src="flores-amarillas-que-otra-cosita-les-gustaria-que-hiciera-floresamarillas-128-ytshorts.savetube.me.mp3" type="audio/mpeg">
-    Tu navegador no soporta audio HTML5.
-  </audio>
-
-  <script>
-    const nextBtn = document.getElementById('nextBtn');
-    const pauseBtn = document.getElementById('pauseBtn');
-    const scene = document.getElementById('scene');
-    const music = document.getElementById('music');
-    const messages = document.querySelectorAll('.message');
-
-    let isPlaying = false;
-
-    let step = 0;
-    nextBtn.addEventListener('click', () => {
-      if (step < messages.length) {
-        messages[step].classList.add("show");
-        step++;
-      } else {
-        scene.style.display = 'flex';
-        nextBtn.style.display = 'none';
-        pauseBtn.style.display = 'inline-block';
-        music.play();
-        isPlaying = true;
-      }
-    });
-
-    pauseBtn.addEventListener('click', () => {
-      if (isPlaying) {
-        music.pause();
-        pauseBtn.textContent = "Reanudar";
-      } else {
-        music.play();
-        pauseBtn.textContent = "Pausar";
-      }
-      isPlaying = !isPlaying;
-    });
-  </script>
 </body>
 </html>
+
 
 
    
