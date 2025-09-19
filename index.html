@@ -76,10 +76,6 @@
 
   #scene { 
     display:none; 
-    flex-wrap: wrap; 
-    justify-content:center; 
-    align-items:flex-end; 
-    gap:30px; 
     height:100vh; 
     width:100%; 
     position:absolute; 
@@ -87,12 +83,13 @@
     left:0;
   }
 
-  /* Animación de florecimiento y movimiento de enredadera */
+  /* Animación de florecimiento y balanceo */
   .tulip-svg { 
     transform: scaleY(0); 
     transform-origin: bottom center; 
-    animation: bloom 2s forwards, sway 4s ease-in-out infinite alternate; 
+    animation: bloom 2s forwards, sway 4s ease-in-out infinite alternate, rise 5s forwards;
   }
+
   @keyframes bloom { 
     0% { transform: scaleY(0); opacity:0; } 
     100% { transform: scaleY(1); opacity:1; } 
@@ -102,6 +99,11 @@
     0% { transform: scaleY(1) rotate(-5deg); }
     50% { transform: scaleY(1) rotate(5deg); }
     100% { transform: scaleY(1) rotate(-5deg); }
+  }
+
+  @keyframes rise {
+    0% { transform: translateY(100%); }
+    100% { transform: translateY(0); }
   }
 
   @keyframes fadeIn { from {opacity:0;} to {opacity:1;} }
@@ -128,7 +130,7 @@
   <div class="message">Eres mi razón de sonreír ✨</div>
   <div class="message">La luz de mis días 💫</div>
   <div class="message">Y mi sueño más bonito 🌙</div>
-  <div class="message">Te amoooo 💛</div> <!-- Nuevo mensaje añadido -->
+  <div class="message">Te amoooo 💛</div>
 </div>
 
 <button id="nextBtn">Siguiente</button>
@@ -150,7 +152,7 @@
   let isPlaying = false;
   let step = 0;
 
-  // Crear tulipanes como enredadera
+  // Crear tulipanes con enredadera que sube
   function createTulips(count){
     for(let i=0;i<count;i++){
       const tulip = document.createElementNS("http://www.w3.org/2000/svg","svg");
@@ -159,22 +161,24 @@
       tulip.setAttribute("viewBox","0 0 60 140");
       tulip.classList.add("tulip-svg");
       tulip.style.position = "absolute";
-      tulip.style.left = Math.random()*95+"%";
-      tulip.style.bottom = Math.random()*30+"%";
-      tulip.style.animationDelay = (Math.random()*2)+"s";
+      tulip.style.left = (10 + i*2.2) + "%"; // distribuidos horizontalmente
+      tulip.style.bottom = "0"; 
+      tulip.style.animationDelay = (i*0.2) + "s"; // efecto escalonado
 
+      // Tallo
       const line = document.createElementNS("http://www.w3.org/2000/svg","line");
       line.setAttribute("x1","30");
       line.setAttribute("y1","140");
       line.setAttribute("x2","30");
       line.setAttribute("y2","50");
-      line.setAttribute("stroke","green");
+      line.setAttribute("stroke","#21AF57"); // verde
       line.setAttribute("stroke-width","6");
 
+      // Flor
       const flower = document.createElementNS("http://www.w3.org/2000/svg","polygon");
       flower.setAttribute("points","15,50 30,0 45,50");
-      flower.setAttribute("fill","yellow");
-      flower.setAttribute("stroke","orange");
+      flower.setAttribute("fill","#FFFF00"); // amarillo
+      flower.setAttribute("stroke","#FFA500"); // borde naranja
       flower.setAttribute("stroke-width","2");
 
       tulip.appendChild(line);
@@ -189,7 +193,7 @@
       step++;
     } else {
       scene.style.display = 'block';
-      createTulips(40); // Tulipanes por toda la pantalla
+      createTulips(30); // Tulipanes con enredadera
       nextBtn.style.display = 'none';
       pauseBtn.style.display = 'inline-block';
       music.play();
